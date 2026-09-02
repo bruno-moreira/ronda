@@ -1,0 +1,101 @@
+import React, { useState } from 'react';
+import { useAuth } from '../context/AuthContext';
+import { Shield, KeyRound, Mail, AlertCircle, ArrowRight } from 'lucide-react';
+
+export const LoginView: React.FC = () => {
+  const { login } = useAuth();
+  const [email, setEmail] = useState('admin@ronda.com');
+  const [senha, setSenha] = useState('admin123');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+    setLoading(true);
+    try {
+      await login(email, senha);
+    } catch (err: any) {
+      setError(err.response?.data?.message || 'Falha na autenticação. Verifique seu e-mail e senha.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-slate-950 flex items-center justify-center p-4">
+      <div className="w-full max-w-md">
+        <div className="text-center mb-8">
+          <div className="inline-flex bg-emerald-500/10 p-4 rounded-2xl border border-emerald-500/20 mb-4 shadow-xl shadow-emerald-500/10">
+            <Shield className="w-10 h-10 text-emerald-400" />
+          </div>
+          <h1 className="text-2xl font-bold bg-gradient-to-r from-emerald-400 to-teal-300 bg-clip-text text-transparent">
+            Ronda Security System
+          </h1>
+          <p className="text-sm text-slate-400 mt-1">Painel Administrativo de Controle de Rondas</p>
+        </div>
+
+        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-2xl">
+          {error && (
+            <div className="mb-6 bg-rose-500/10 border border-rose-500/20 text-rose-400 p-4 rounded-xl text-sm flex items-start space-x-3">
+              <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
+              <span>{error}</span>
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit} className="space-y-5">
+            <div>
+              <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
+                E-mail de Acesso
+              </label>
+              <div className="relative">
+                <Mail className="w-5 h-5 text-slate-500 absolute left-3.5 top-3.5" />
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  className="w-full bg-slate-950 border border-slate-800 rounded-xl pl-11 pr-4 py-3 text-slate-100 placeholder-slate-500 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 text-sm transition-all"
+                  placeholder="admin@ronda.com"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
+                Senha
+              </label>
+              <div className="relative">
+                <KeyRound className="w-5 h-5 text-slate-500 absolute left-3.5 top-3.5" />
+                <input
+                  type="password"
+                  value={senha}
+                  onChange={(e) => setSenha(e.target.value)}
+                  required
+                  className="w-full bg-slate-950 border border-slate-800 rounded-xl pl-11 pr-4 py-3 text-slate-100 placeholder-slate-500 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 text-sm transition-all"
+                  placeholder="••••••••"
+                />
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold py-3 px-4 rounded-xl transition-all shadow-lg shadow-emerald-500/20 flex items-center justify-center space-x-2 text-sm disabled:opacity-50"
+            >
+              <span>{loading ? 'Entrando...' : 'Acessar Painel'}</span>
+              {!loading && <ArrowRight className="w-4 h-4" />}
+            </button>
+          </form>
+
+          <div className="mt-6 pt-6 border-t border-slate-800 text-center">
+            <p className="text-xs text-slate-500">
+              Credenciais Padrão: <span className="text-emerald-400 font-mono">admin@ronda.com</span> /{' '}
+              <span className="text-emerald-400 font-mono">admin123</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
