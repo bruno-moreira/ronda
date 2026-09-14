@@ -15,21 +15,33 @@ export class AuthService implements OnModuleInit {
   ) {}
 
   async onModuleInit() {
-    // Seed admin inicial se o banco estiver vazio
+    // Seed admin e vigilante inicial
     try {
-      const existingUsers = await this.db.select().from(users).limit(1);
-      if (existingUsers.length === 0) {
-        const hash = await bcrypt.hash('admin123', 10);
+      const adminUsers = await this.db.select().from(users).where(eq(users.email, 'admin@ronda.com')).limit(1);
+      if (adminUsers.length === 0) {
+        const hashAdmin = await bcrypt.hash('admin123', 10);
         await this.db.insert(users).values({
           nome: 'Administrador do Sistema',
           email: 'admin@ronda.com',
-          senhaHash: hash,
+          senhaHash: hashAdmin,
           role: 'ADMIN',
         });
         console.log('User Admin criado por padrão: admin@ronda.com / admin123');
       }
+
+      const vigUsers = await this.db.select().from(users).where(eq(users.email, 'vigilante@ronda.com')).limit(1);
+      if (vigUsers.length === 0) {
+        const hashVigilante = await bcrypt.hash('ronda123', 10);
+        await this.db.insert(users).values({
+          nome: 'Vigilante Padrao',
+          email: 'vigilante@ronda.com',
+          senhaHash: hashVigilante,
+          role: 'VIGILANTE',
+        });
+        console.log('User Vigilante criado por padrão: vigilante@ronda.com / ronda123');
+      }
     } catch (e) {
-      console.error('Erro ao verificar/criar admin inicial:', e.message);
+      console.error('Erro ao verificar/criar usuarios iniciais:', e.message);
     }
   }
 

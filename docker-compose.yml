@@ -36,7 +36,8 @@ services:
     depends_on:
       - backend
     ports:
-      - "8080:80" # Usando porta 8080 para evitar conflitos com outras aplicações
+      - "8080:80" # Usando porta 8080 para HTTP
+      - "8443:443" # Usando porta 8443 para HTTPS (PWA Scanner)
     
 volumes:
   postgres_data:

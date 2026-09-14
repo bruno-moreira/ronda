@@ -36,6 +36,21 @@ O **Ronda Security** é um sistema completo e robusto para gestão, execução e
 
 ---
 
+## 🌐 Arquitetura do Proxy Reverso (Nginx)
+
+Inspirado na arquitetura do sistema **Netmap Industrial**, este projeto utiliza o **Nginx** como Proxy Reverso para orquestrar o tráfego do sistema. Essa abordagem resolve nativamente os temidos bloqueios de CORS (Cross-Origin Resource Sharing) e simplifica o deploy.
+
+**Como funciona:**
+1. **Ponto de Entrada Único**: Todo o acesso ao sistema (Web e Mobile) passa pela porta `8080` (configurada via Docker) que é gerida pelo Nginx.
+2. **Distribuição de Rotas**:
+   - Requisições para `/` servem os arquivos estáticos compilados do Painel Web (React).
+   - Requisições para `/api/*` são interceptadas pelo Nginx e encaminhadas internamente para o Backend (NestJS) rodando de forma blindada na porta `3000` (não exposta ao host).
+3. **Vantagens**:
+   - O navegador enxerga o Frontend e o Backend como sendo **o mesmo domínio e porta**, não disparando bloqueios de segurança (CORS).
+   - O container da API fica isolado, permitindo que a infraestrutura se escale e garantindo maior segurança.
+
+---
+
 ## 📋 Pré-requisitos
 
 Antes de iniciar, certifique-se de ter instalado em sua máquina:

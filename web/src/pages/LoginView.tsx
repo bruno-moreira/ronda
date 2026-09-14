@@ -4,8 +4,8 @@ import { Shield, KeyRound, Mail, AlertCircle, ArrowRight } from 'lucide-react';
 
 export const LoginView: React.FC = () => {
   const { login } = useAuth();
-  const [email, setEmail] = useState('admin@ronda.com');
-  const [senha, setSenha] = useState('admin123');
+  const [email, setEmail] = useState('');
+  const [senha, setSenha] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -88,12 +88,6 @@ export const LoginView: React.FC = () => {
             </button>
           </form>
 
-          <div className="mt-6 pt-6 border-t border-slate-800 text-center">
-            <p className="text-xs text-slate-500">
-              Credenciais Padrão: <span className="text-emerald-400 font-mono">admin@ronda.com</span> /{' '}
-              <span className="text-emerald-400 font-mono">admin123</span>
-            </p>
-          </div>
         </div>
       </div>
     </div>
