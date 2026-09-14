@@ -105,11 +105,17 @@ npx expo start
 
 ## 🔑 Credenciais Padrão de Acesso
 
-O sistema cria automaticamente um usuário Administrador inicial no primeiro arranque:
+O sistema cria automaticamente usuários iniciais no primeiro arranque do banco de dados:
 
+### Administrador (Acesso Completo)
 - **E-mail**: `admin@ronda.com`
 - **Senha**: `admin123`
 - **Perfil**: `ADMIN`
+
+### Vigilante (Acesso Restrito / PWA Scanner)
+- **E-mail**: `vigilante@ronda.com`
+- **Senha**: `ronda123`
+- **Perfil**: `VIGILANTE`
 
 ---
 
