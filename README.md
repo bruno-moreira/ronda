@@ -32,83 +32,59 @@ O **Ronda Security** é um sistema completo e robusto para gestão, execução e
 - **Backend**: NestJS, Fastify, Drizzle ORM, PostgreSQL, PGlite, JWT, Bcrypt, Jest, Supertest.
 - **Frontend Web**: React 18, Vite, TypeScript, TailwindCSS, React Query, Lucide Icons, Axios.
 - **Mobile**: Expo SDK 57, React Native, TypeScript, Expo SQLite, Expo Camera, NetInfo.
+- **Deploy/Infraestrutura**: Docker, Docker Compose, Nginx (Proxy Reverso).
 
 ---
 
 ## 📋 Pré-requisitos
 
 Antes de iniciar, certifique-se de ter instalado em sua máquina:
-- **Node.js** (versão 18 ou superior)
-- **npm** ou **yarn**
-- **Docker & Docker Compose** (Opcional, pois o backend possui fallback PGlite zero-config)
+- **Node.js** (versão 18 ou superior) - Para desenvolvimento local.
+- **Docker & Docker Compose** - Obrigatório para rodar a arquitetura completa com Nginx de forma simplificada.
 
 ---
 
-## 🏁 Guia de Execução pela Primeira Vez
+## 🏁 Guia de Execução e Deploy
 
-Siga os passos abaixo para rodar o sistema completo pela primeira vez.
+O sistema agora conta com um ambiente de deploy completo via Docker Compose, empacotando o Frontend (Nginx), Backend (NestJS) e Banco de Dados (PostgreSQL) para evitar problemas de CORS e simular um ambiente de produção idêntico ao Netmap Industrial.
 
-### 1️⃣ Passo 1: Subir o Banco de Dados (Opcional)
-Se desejar utilizar o PostgreSQL oficial no Docker:
-```bash
-docker compose up -d
-```
-> *Nota: Se você não tiver o Docker instalado, o backend inicializará automaticamente um banco PostgreSQL embutido (PGlite) na pasta `backend/pgdata`.*
+### 1️⃣ Inicializando a Infraestrutura (Backend + Web)
 
----
-
-### 2️⃣ Passo 2: Executar o Backend API
-Abra um terminal e navegue até a pasta `backend`:
+Abra um terminal na raiz do projeto (onde está o `docker-compose.yml`) e execute:
 
 ```bash
-cd backend
-
-# Instalar dependências (caso não tenha instalado)
-npm install
-
-# Subir as tabelas do banco de dados
-npm run db:push
-
-# Iniciar o servidor backend em modo de desenvolvimento
-npm run start:dev
+docker compose up --build -d
 ```
-- A API estará disponível em: `http://localhost:3000` ou `http://<SEU_IP_LOCAL>:3000`
-- Documentação Swagger: `http://localhost:3000/api/docs`
+
+Este comando irá baixar as dependências, construir e iniciar:
+1. **Banco de Dados**: PostgreSQL na porta `5433` (externa).
+2. **Backend (API)**: Comunicação estritamente interna com o Docker.
+3. **Frontend + Proxy Reverso (Nginx)**: Servindo a interface Web e roteando a API (evitando CORS). Disponível na porta `8080`.
+
+- **Painel Web (React)**: Acesse `http://localhost:8080` (ou o IP local: `http://<SEU_IP>:8080`).
+- **Documentação da API (Swagger)**: Acesse `http://localhost:8080/api/docs`.
 
 ---
 
-### 3️⃣ Passo 3: Executar o Painel Web Administrador
-Abra um novo terminal e navegue até a pasta `web`:
+### 2️⃣ Inicializando o Aplicativo Mobile
 
-```bash
-cd web
-
-# Instalar dependências
-npm install
-
-# Iniciar a aplicação Web
-npm run dev
-```
-- O Painel Web estará disponível em: `http://localhost:5173`
-
----
-
-### 4️⃣ Passo 4: Executar o Aplicativo Mobile
-Abra um terceiro terminal e navegue até a pasta `mobile`:
+O App mobile deve ser rodado separadamente utilizando o Expo.
+Abra um novo terminal e navegue até a pasta `mobile`:
 
 ```bash
 cd mobile
 
-# Instalar dependências
+# Instalar dependências (apenas na primeira vez)
 npm install
 
-# Executar o app no navegador (Expo Web)
-npx expo start --web
+# Executar o app
+npx expo start
 ```
 - Para testar em um **dispositivo móvel físico**:
   1. Instale o app **Expo Go** em seu celular.
-  2. Execute `npx expo start` e escaneie o QR Code exibido no terminal.
-  3. No app, clique no ícone de engrenagem `⚙️` na tela de login e ajuste o IP do Servidor para o IP da sua máquina na rede local (ex: `http://10.107.20.214:3000`).
+  2. Escaneie o QR Code exibido no terminal.
+  3. No app (após carregar a tela de Login), clique no ícone de engrenagem `⚙️` e ajuste o **IP do Servidor** para apontar para o Nginx.
+     Exemplo: `http://<IP_DA_SUA_MAQUINA>:8080/api`
 
 ---
 
@@ -122,37 +98,23 @@ O sistema cria automaticamente um usuário Administrador inicial no primeiro arr
 
 ---
 
-## 🧪 Executando os Testes Automatizados
+## 🧪 Desenvolvimento e Testes
 
-O sistema conta com suítes completas de testes unitários e de integração E2E:
-
-```bash
-cd backend
-
-# Executar Testes Unitários
-npm run test
-
-# Executar Testes de Integração E2E
-npm run test:e2e
-```
+Caso deseje desenvolver ou debugar os módulos de forma individual fora do Docker:
+- **Backend**: Em `backend/`, rode `npm run start:dev` (A API subirá na porta 3000 localmente).
+- **Frontend**: Em `web/`, rode `npm run dev` (O painel subirá na porta 5173).
+- **Testes (Backend)**: Em `backend/`, rode `npm run test` (Testes unitários) ou `npm run test:e2e` (Integração).
 
 ---
 
-## 📁 Estrutura de Pastas
+## 📁 Estrutura de Pastas (Deploy)
 
 ```
 Ronda/
-├── backend/                  # Servidor NestJS API REST
-│   ├── src/                  # Código fonte (Auth, Patrol, Routes, Users, Drizzle)
-│   ├── test/                 # Testes de Integração E2E
-│   └── drizzle.config.ts     # Configurações do Drizzle ORM
-├── web/                      # Painel Administrador React + Vite
-│   ├── src/                  # Páginas (SessionsView, ReportsView, RoutesView, UsersView)
-│   └── public/               # Recursos estáticos
-├── mobile/                   # App Vigilante Expo + React Native
-│   ├── src/                  # Componentes, Telas (PatrolApp, ScannerScreen), Serviços
-│   └── app.json              # Configuração do Expo SDK
-├── docker-compose.yml        # Container PostgreSQL 16
-├── relatorio.pdf             # Modelo de referência do Relatório Coletas
-└── README.md                 # Documentação do projeto
+├── backend/                  # API REST (NestJS) + Dockerfile Backend
+├── web/                      # Painel Admin (React) + nginx.conf + Dockerfile Web
+├── mobile/                   # App Vigilante (Expo + React Native)
+├── docker-compose.yml        # Orquestrador de Containers (Nginx, API, DB)
+├── relatorio.pdf             # Modelo de referência
+└── README.md                 # Esta documentação
 ```

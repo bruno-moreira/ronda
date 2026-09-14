@@ -15,23 +15,35 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.PatrolService = void 0;
 const common_1 = require("@nestjs/common");
 const drizzle_orm_1 = require("drizzle-orm");
+const crypto_1 = require("crypto");
 const drizzle_module_1 = require("../drizzle/drizzle.module");
 const schema_1 = require("../drizzle/schema");
+const isUUID = (str) => /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/.test(str);
+const toValidUuid = (str) => {
+    if (!str)
+        return (0, crypto_1.randomUUID)();
+    if (isUUID(str))
+        return str;
+    const hash = (0, crypto_1.createHash)('md5').update(str).digest('hex');
+    return `${hash.substring(0, 8)}-${hash.substring(8, 12)}-4${hash.substring(13, 16)}-a${hash.substring(17, 20)}-${hash.substring(20, 32)}`;
+};
 let PatrolService = class PatrolService {
     db;
     constructor(db) {
         this.db = db;
     }
     async startSession(userId, dto) {
-        const routeList = await this.db.select().from(schema_1.routes).where((0, drizzle_orm_1.eq)(schema_1.routes.id, dto.routeId)).limit(1);
+        const validUserId = toValidUuid(userId);
+        const validRouteId = toValidUuid(dto.routeId);
+        const routeList = await this.db.select().from(schema_1.routes).where((0, drizzle_orm_1.eq)(schema_1.routes.id, validRouteId)).limit(1);
         if (routeList.length === 0) {
             throw new common_1.NotFoundException('Rota não encontrada');
         }
         const [session] = await this.db
             .insert(schema_1.patrolSessions)
             .values({
-            userId,
-            routeId: dto.routeId,
+            userId: validUserId,
+            routeId: validRouteId,
             startTime: new Date(),
             status: 'IN_PROGRESS',
         })
@@ -55,12 +67,13 @@ let PatrolService = class PatrolService {
             .leftJoin(schema_1.routes, (0, drizzle_orm_1.eq)(schema_1.patrolSessions.routeId, schema_1.routes.id))
             .leftJoin(schema_1.users, (0, drizzle_orm_1.eq)(schema_1.patrolSessions.userId, schema_1.users.id))
             .orderBy((0, drizzle_orm_1.desc)(schema_1.patrolSessions.startTime));
-        if (userId) {
+        if (userId && isUUID(userId)) {
             return sessionList.filter((s) => s.userId === userId);
         }
         return sessionList;
     }
     async getSessionDetails(id) {
+        const validSessionId = toValidUuid(id);
         const sessionList = await this.db
             .select({
             id: schema_1.patrolSessions.id,
@@ -75,7 +88,7 @@ let PatrolService = class PatrolService {
             .from(schema_1.patrolSessions)
             .leftJoin(schema_1.routes, (0, drizzle_orm_1.eq)(schema_1.patrolSessions.routeId, schema_1.routes.id))
             .leftJoin(schema_1.users, (0, drizzle_orm_1.eq)(schema_1.patrolSessions.userId, schema_1.users.id))
-            .where((0, drizzle_orm_1.eq)(schema_1.patrolSessions.id, id))
+            .where((0, drizzle_orm_1.eq)(schema_1.patrolSessions.id, validSessionId))
             .limit(1);
         if (sessionList.length === 0) {
             throw new common_1.NotFoundException('Sessão de ronda não encontrada');
@@ -93,7 +106,7 @@ let PatrolService = class PatrolService {
         })
             .from(schema_1.patrolLogs)
             .leftJoin(schema_1.checkpoints, (0, drizzle_orm_1.eq)(schema_1.patrolLogs.checkpointId, schema_1.checkpoints.id))
-            .where((0, drizzle_orm_1.eq)(schema_1.patrolLogs.sessionId, id))
+            .where((0, drizzle_orm_1.eq)(schema_1.patrolLogs.sessionId, validSessionId))
             .orderBy((0, drizzle_orm_1.asc)(schema_1.patrolLogs.scannedAt));
         return { ...session, logs: logsList };
     }
@@ -129,10 +142,12 @@ let PatrolService = class PatrolService {
             result = result.filter((item) => new Date(item.scannedAt) <= end);
         }
         if (filters.routeId) {
-            result = result.filter((item) => item.routeId === filters.routeId);
+            const validRouteId = toValidUuid(filters.routeId);
+            result = result.filter((item) => item.routeId === validRouteId || item.routeId === filters.routeId);
         }
         if (filters.userId) {
-            result = result.filter((item) => item.userId === filters.userId);
+            const validUserId = toValidUuid(filters.userId);
+            result = result.filter((item) => item.userId === validUserId || item.userId === filters.userId);
         }
         return result;
     }
@@ -148,9 +163,12 @@ let PatrolService = class PatrolService {
             try {
                 let cpId = logItem.checkpointId;
                 let routeIdForCp = null;
+                const targetSessionUuid = toValidUuid(logItem.sessionId);
                 if (cpId) {
-                    const cpList = await this.db.select().from(schema_1.checkpoints).where((0, drizzle_orm_1.eq)(schema_1.checkpoints.id, cpId)).limit(1);
+                    const validCpUuid = toValidUuid(cpId);
+                    const cpList = await this.db.select().from(schema_1.checkpoints).where((0, drizzle_orm_1.eq)(schema_1.checkpoints.id, validCpUuid)).limit(1);
                     if (cpList.length > 0) {
+                        cpId = cpList[0].id;
                         routeIdForCp = cpList[0].routeId;
                     }
                     else {
@@ -186,16 +204,28 @@ let PatrolService = class PatrolService {
                 const existingSession = await this.db
                     .select()
                     .from(schema_1.patrolSessions)
-                    .where((0, drizzle_orm_1.eq)(schema_1.patrolSessions.id, logItem.sessionId))
+                    .where((0, drizzle_orm_1.eq)(schema_1.patrolSessions.id, targetSessionUuid))
                     .limit(1);
                 if (existingSession.length === 0) {
-                    const defaultUsers = await this.db.select().from(schema_1.users).limit(1);
-                    const defaultUserId = defaultUsers.length > 0 ? defaultUsers[0].id : null;
+                    let defaultUsers = await this.db.select().from(schema_1.users).limit(1);
+                    if (defaultUsers.length === 0) {
+                        const [newUser] = await this.db
+                            .insert(schema_1.users)
+                            .values({
+                            nome: 'Vigilante Sistema',
+                            email: 'system@ronda.com',
+                            senhaHash: 'seeded',
+                            role: 'VIGILANTE',
+                        })
+                            .returning();
+                        defaultUsers = [newUser];
+                    }
+                    const defaultUserId = defaultUsers[0].id;
                     const defaultRoutes = await this.db.select().from(schema_1.routes).limit(1);
                     const targetRouteId = routeIdForCp || (defaultRoutes.length > 0 ? defaultRoutes[0].id : null);
                     if (defaultUserId && targetRouteId) {
                         await this.db.insert(schema_1.patrolSessions).values({
-                            id: logItem.sessionId,
+                            id: targetSessionUuid,
                             userId: defaultUserId,
                             routeId: targetRouteId,
                             startTime: new Date(logItem.scannedAt),
@@ -203,7 +233,7 @@ let PatrolService = class PatrolService {
                         });
                     }
                 }
-                sessionIdsToEvaluate.add(logItem.sessionId);
+                sessionIdsToEvaluate.add(targetSessionUuid);
                 if (!cpId) {
                     report.errors.push({
                         localId: logItem.localId,
@@ -212,7 +242,7 @@ let PatrolService = class PatrolService {
                     continue;
                 }
                 await this.db.insert(schema_1.patrolLogs).values({
-                    sessionId: logItem.sessionId,
+                    sessionId: targetSessionUuid,
                     checkpointId: cpId,
                     scannedAt: new Date(logItem.scannedAt),
                     syncStatus: 'SYNCED',
@@ -237,13 +267,14 @@ let PatrolService = class PatrolService {
         };
     }
     async evaluateAndFinalizeSession(sessionId) {
+        const validSessionUuid = toValidUuid(sessionId);
         const sessionList = await this.db
             .select()
             .from(schema_1.patrolSessions)
-            .where((0, drizzle_orm_1.eq)(schema_1.patrolSessions.id, sessionId))
+            .where((0, drizzle_orm_1.eq)(schema_1.patrolSessions.id, validSessionUuid))
             .limit(1);
         if (sessionList.length === 0) {
-            return { sessionId, status: 'NOT_FOUND' };
+            return { sessionId: validSessionUuid, status: 'NOT_FOUND' };
         }
         const session = sessionList[0];
         const routeList = await this.db
@@ -252,7 +283,7 @@ let PatrolService = class PatrolService {
             .where((0, drizzle_orm_1.eq)(schema_1.routes.id, session.routeId))
             .limit(1);
         if (routeList.length === 0) {
-            return { sessionId, status: 'ROUTE_NOT_FOUND' };
+            return { sessionId: validSessionUuid, status: 'ROUTE_NOT_FOUND' };
         }
         const route = routeList[0];
         const routeCheckpoints = await this.db
@@ -263,7 +294,7 @@ let PatrolService = class PatrolService {
         const logs = await this.db
             .select()
             .from(schema_1.patrolLogs)
-            .where((0, drizzle_orm_1.eq)(schema_1.patrolLogs.sessionId, sessionId))
+            .where((0, drizzle_orm_1.eq)(schema_1.patrolLogs.sessionId, validSessionUuid))
             .orderBy((0, drizzle_orm_1.asc)(schema_1.patrolLogs.scannedAt));
         const scannedCpIds = new Set(logs.map((l) => l.checkpointId));
         const totalDistinctScanned = scannedCpIds.size;
@@ -298,9 +329,9 @@ let PatrolService = class PatrolService {
             endTime: new Date(),
             status: finalStatus,
         })
-            .where((0, drizzle_orm_1.eq)(schema_1.patrolSessions.id, sessionId));
+            .where((0, drizzle_orm_1.eq)(schema_1.patrolSessions.id, validSessionUuid));
         return {
-            sessionId,
+            sessionId: validSessionUuid,
             totalDistinctScanned,
             qtdeMinimaCheckpoints: route.qtdeMinimaCheckpoints,
             isOrdered: route.isOrdered,

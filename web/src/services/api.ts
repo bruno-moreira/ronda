@@ -1,12 +1,7 @@
 import axios from 'axios';
 
-const COMPUTER_HOST_IP = '10.107.20.214';
-
 const getBaseUrl = () => {
-  if (typeof window !== 'undefined' && window.location.hostname) {
-    return `http://${window.location.hostname}:3000`;
-  }
-  return `http://${COMPUTER_HOST_IP}:3000`;
+  return '/api';
 };
 
 export const api = axios.create({

@@ -14,5 +14,29 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: ronda_backend
+    restart: always
+    depends_on:
+      - postgres
+    environment:
+      - DATABASE_URL=postgresql://ronda:rondapassword@postgres:5432/ronda_db
+      - JWT_SECRET=testsecret
+    # Não expomos a porta 3000 para o host, apenas para a rede interna do docker
+
+  web:
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+    container_name: ronda_web
+    restart: always
+    depends_on:
+      - backend
+    ports:
+      - "8080:80" # Usando porta 8080 para evitar conflitos com outras aplicações
+    
 volumes:
   postgres_data:
