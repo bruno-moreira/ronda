@@ -49,6 +49,11 @@ Inspirado na arquitetura do sistema **Netmap Industrial**, este projeto utiliza 
    - O navegador enxerga o Frontend e o Backend como sendo **o mesmo domínio e porta**, não disparando bloqueios de segurança (CORS).
    - O container da API fica isolado, permitindo que a infraestrutura se escale e garantindo maior segurança.
 
+> [!TIP]
+> **Como alterar a porta principal do sistema (Nginx)?**
+> Se você já possuir outra aplicação rodando na porta `8080` no seu servidor, basta abrir o arquivo `docker-compose.yml`, localizar o serviço `web` e alterar o mapeamento de portas. 
+> Exemplo para mudar para a porta 9090: mude de `8080:80` para `9090:80`. Todo o restante do sistema (backend, banco) continuará abstraído sem precisar de nenhuma outra alteração!
+
 ---
 
 ## 📋 Pré-requisitos
@@ -81,25 +86,32 @@ Este comando irá baixar as dependências, construir e iniciar:
 
 ---
 
-### 2️⃣ Inicializando o Aplicativo Mobile
+### 2️⃣ Utilizando o Modo Vigilante (Mobile)
 
-O App mobile deve ser rodado separadamente utilizando o Expo.
+Para os vigilantes que estarão em campo lendo os QR Codes, há **duas opções** disponíveis. Recomendamos fortemente a **Opção A (PWA)** por dispensar a instalação de APKs.
+
+#### Opção A: Scanner Web PWA (Recomendado)
+Acesse a URL especial de rondas diretamente do navegador do tablet ou celular:
+- **URL**: `https://<SEU_IP>:8443/rondas` (Exemplo: `https://192.168.1.175:8443/rondas`)
+- Esse modo se auto-conecta usando a rede do **Nginx** automaticamente, garantindo isolamento total do painel de administrador.
+- É possível instalar na tela inicial (Add to Home Screen) como se fosse um app nativo.
+
+#### Opção B: Aplicativo Nativo (Expo / React Native)
+O App mobile também pode ser rodado localmente e instalado.
 Abra um novo terminal e navegue até a pasta `mobile`:
 
 ```bash
 cd mobile
-
-# Instalar dependências (apenas na primeira vez)
 npm install
-
-# Executar o app
 npx expo start
 ```
 - Para testar em um **dispositivo móvel físico**:
   1. Instale o app **Expo Go** em seu celular.
   2. Escaneie o QR Code exibido no terminal.
-  3. No app (após carregar a tela de Login), clique no ícone de engrenagem `⚙️` e ajuste o **IP do Servidor** para apontar para o Nginx.
-     Exemplo: `http://<IP_DA_SUA_MAQUINA>:8080/api`
+  3. **Configuração de Acesso via Nginx**: No app (na tela de Login), clique no ícone de engrenagem `⚙️` e ajuste o **IP do Servidor** para apontar para o proxy Nginx (porta `8080` com sufixo `/api`).
+     👉 **Exemplo: `http://<IP_DA_SUA_MAQUINA>:8080/api`**
+  4. Salve e faça login com as credenciais do Vigilante.
+
 
 ---
 

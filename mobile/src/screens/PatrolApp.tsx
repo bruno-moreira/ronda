@@ -130,14 +130,17 @@ export const PatrolApp: React.FC = () => {
     setLoading(true);
     addLogMessage(`Conectando ao backend em ${getCurrentServerUrl()} para atualizar rotas...`);
     try {
-      // Tentar login primeiro se não tiver token
+      // Tentar login primeiro se não tiver token (auto-login transparente como Vigilante)
       if (!token) {
-        const res = await api.post('/auth/login', { email, senha });
+        const res = await api.post('/auth/login', { 
+          email: 'vigilante@ronda.com', 
+          senha: 'ronda123' 
+        });
         const { access_token, user: loggedUser } = res.data;
         setToken(access_token);
         setUser(loggedUser);
         setAuthToken(access_token);
-        addLogMessage(`🟢 Autenticado como ${loggedUser.nome}.`);
+        addLogMessage(`🟢 Autenticado transparente como ${loggedUser.nome}.`);
       }
 
       // Baixar rotas e checkpoints do backend e atualizar o SQLite local
@@ -286,23 +289,6 @@ export const PatrolApp: React.FC = () => {
               <Text style={styles.cardSubtitle}>
                 Servidor: <Text style={styles.ipText}>{getCurrentServerUrl()}</Text>
               </Text>
-
-              <TextInput
-                style={styles.input}
-                placeholder="E-mail"
-                placeholderTextColor="#64748b"
-                value={email}
-                onChangeText={setEmail}
-                autoCapitalize="none"
-              />
-              <TextInput
-                style={styles.input}
-                placeholder="Senha"
-                placeholderTextColor="#64748b"
-                secureTextEntry
-                value={senha}
-                onChangeText={setSenha}
-              />
 
               <TouchableOpacity style={styles.primaryButton} onPress={handleDownloadFreshRoutes} disabled={loading}>
                 {loading ? (

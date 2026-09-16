@@ -36,16 +36,21 @@ export const updateServerUrl = (newUrl: string) => {
     formattedUrl = `http://${formattedUrl}`;
   }
   
+  // Remove trailing slashes
+  if (formattedUrl.endsWith('/')) {
+    formattedUrl = formattedUrl.slice(0, -1);
+  }
+
+  // Add default port if no port and no path is specified and it's not https
   try {
     const urlObj = new URL(formattedUrl);
-    // Sanitização: Mantém apenas protocolo + host + porta (ex: "http://10.107.20.214:3000")
-    formattedUrl = urlObj.origin;
-  } catch (e) {
-    // Se falhar o parse da URL, remove barras finais
-    if (formattedUrl.endsWith('/')) {
-      formattedUrl = formattedUrl.slice(0, -1);
+    if (!urlObj.port && urlObj.protocol === 'http:') {
+      // Somente para garantir fallback em desenvolvimento caso o usuario apenas digite IP
+      if (urlObj.pathname === '/' || urlObj.pathname === '') {
+        formattedUrl = `${urlObj.origin}:3000`;
+      }
     }
-    // Se não tiver porta especificada, adiciona :3000
+  } catch (e) {
     if (!formattedUrl.includes(':', 7)) {
       formattedUrl = `${formattedUrl}:3000`;
     }
