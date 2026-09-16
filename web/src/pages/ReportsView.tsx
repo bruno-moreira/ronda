@@ -62,15 +62,15 @@ export const ReportsView: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* PAINEL DE FILTROS E AÇÕES (NÃO APARECE NA IMPRESSÃO) */}
-      <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4 no-print">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-4">
+      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-xl space-y-4 no-print">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800 pb-4">
           <div className="flex items-center space-x-3">
             <div className="bg-blue-500/10 p-2.5 rounded-xl border border-blue-500/20">
               <FileText className="w-6 h-6 text-blue-400" />
             </div>
             <div>
-              <h2 className="text-xl font-bold text-slate-100">Gerador de Relatório Coletas</h2>
-              <p className="text-sm text-slate-400">
+              <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100">Gerador de Relatório Coletas</h2>
+              <p className="text-sm text-slate-500 dark:text-slate-400">
                 Filtre as coletas por período, rota e rondante para gerar o documento oficial de impressão.
               </p>
             </div>
@@ -78,7 +78,7 @@ export const ReportsView: React.FC = () => {
 
           <button
             onClick={handlePrint}
-            className="flex items-center space-x-2 bg-blue-500 hover:bg-blue-400 text-slate-950 font-bold px-4 py-2.5 rounded-xl transition-all shadow-lg shadow-blue-500/20 text-sm"
+            className="flex items-center space-x-2 bg-blue-500 hover:bg-blue-400 text-white dark:text-slate-950 font-bold px-4 py-2.5 rounded-xl transition-all shadow-lg shadow-blue-500/20 text-sm"
           >
             <Printer className="w-4 h-4" />
             <span>Imprimir / Exportar PDF</span>
@@ -88,7 +88,7 @@ export const ReportsView: React.FC = () => {
         {/* CONTROLES DE CABEÇALHO E FILTROS */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-3 pt-2">
           <div className="lg:col-span-2">
-            <label className="block text-xs font-semibold text-slate-400 mb-1 flex items-center space-x-1">
+            <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1 flex items-center space-x-1">
               <Building2 className="w-3.5 h-3.5" />
               <span>Nome da Unidade / Empresa</span>
             </label>
@@ -96,12 +96,12 @@ export const ReportsView: React.FC = () => {
               type="text"
               value={companyName}
               onChange={(e) => setCompanyName(e.target.value)}
-              className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-slate-100 text-xs focus:border-blue-500 focus:outline-none"
+              className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-2 text-slate-900 dark:text-slate-100 text-xs focus:border-blue-500 focus:outline-none"
             />
           </div>
 
           <div className="lg:col-span-2">
-            <label className="block text-xs font-semibold text-slate-400 mb-1 flex items-center space-x-1">
+            <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1 flex items-center space-x-1">
               <Building2 className="w-3.5 h-3.5" />
               <span>Endereço / Localização</span>
             </label>
@@ -109,12 +109,12 @@ export const ReportsView: React.FC = () => {
               type="text"
               value={companyAddress}
               onChange={(e) => setCompanyAddress(e.target.value)}
-              className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-slate-100 text-xs focus:border-blue-500 focus:outline-none"
+              className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-2 text-slate-900 dark:text-slate-100 text-xs focus:border-blue-500 focus:outline-none"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-400 mb-1 flex items-center space-x-1">
+            <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1 flex items-center space-x-1">
               <Calendar className="w-3.5 h-3.5" />
               <span>Data Inicial</span>
             </label>
@@ -122,12 +122,12 @@ export const ReportsView: React.FC = () => {
               type="date"
               value={startDate}
               onChange={(e) => setStartDate(e.target.value)}
-              className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-slate-100 text-xs focus:border-blue-500 focus:outline-none"
+              className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-2 text-slate-900 dark:text-slate-100 text-xs focus:border-blue-500 focus:outline-none"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-400 mb-1 flex items-center space-x-1">
+            <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1 flex items-center space-x-1">
               <Calendar className="w-3.5 h-3.5" />
               <span>Data Final</span>
             </label>
@@ -135,19 +135,19 @@ export const ReportsView: React.FC = () => {
               type="date"
               value={endDate}
               onChange={(e) => setEndDate(e.target.value)}
-              className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-slate-100 text-xs focus:border-blue-500 focus:outline-none"
+              className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-2 text-slate-900 dark:text-slate-100 text-xs focus:border-blue-500 focus:outline-none"
             />
           </div>
 
           <div className="lg:col-span-3">
-            <label className="block text-xs font-semibold text-slate-400 mb-1 flex items-center space-x-1">
+            <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1 flex items-center space-x-1">
               <MapPin className="w-3.5 h-3.5" />
               <span>Rota / Roteiro</span>
             </label>
             <select
               value={selectedRouteId}
               onChange={(e) => setSelectedRouteId(e.target.value)}
-              className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-slate-100 text-xs focus:border-blue-500 focus:outline-none"
+              className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-2 text-slate-900 dark:text-slate-100 text-xs focus:border-blue-500 focus:outline-none"
             >
               <option value="">Todas as Rotas</option>
               {routesList.map((r: any) => (
@@ -159,14 +159,14 @@ export const ReportsView: React.FC = () => {
           </div>
 
           <div className="lg:col-span-3">
-            <label className="block text-xs font-semibold text-slate-400 mb-1 flex items-center space-x-1">
+            <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1 flex items-center space-x-1">
               <User className="w-3.5 h-3.5" />
               <span>Rondante / Vigilante</span>
             </label>
             <select
               value={selectedUserId}
               onChange={(e) => setSelectedUserId(e.target.value)}
-              className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-slate-100 text-xs focus:border-blue-500 focus:outline-none"
+              className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-2 text-slate-900 dark:text-slate-100 text-xs focus:border-blue-500 focus:outline-none"
             >
               <option value="">Todos os Rondantes</option>
               {usersList.map((u: any) => (

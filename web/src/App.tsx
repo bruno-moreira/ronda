@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import { ThemeProvider } from './contexts/ThemeContext';
 import { Navbar } from './components/Navbar';
 import { LoginView } from './pages/LoginView';
 import { RoutesView } from './pages/RoutesView';
@@ -27,7 +28,7 @@ const MainContent: React.FC = () => {
 
   if (isLoading || isAutoLogging) {
     return (
-      <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center text-slate-400">
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex flex-col items-center justify-center text-slate-500 dark:text-slate-400">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mb-4"></div>
         <p>Acessando sistema...</p>
       </div>
@@ -41,7 +42,7 @@ const MainContent: React.FC = () => {
   // Se o usuário for VIGILANTE, ele deve ver apenas a tela de scanner
   if (user.role === 'VIGILANTE') {
     return (
-      <div className="min-h-screen bg-slate-950 flex flex-col">
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex flex-col">
         <Navbar currentTab="scanner" setCurrentTab={() => {}} />
         <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <ScannerPatrolView />
@@ -51,7 +52,7 @@ const MainContent: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-slate-950 flex flex-col">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex flex-col">
       <Navbar currentTab={currentTab} setCurrentTab={setCurrentTab} />
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {currentTab === 'routes' && <RoutesView />}
@@ -67,9 +68,11 @@ const MainContent: React.FC = () => {
 export function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <MainContent />
-      </AuthProvider>
+      <ThemeProvider>
+        <AuthProvider>
+          <MainContent />
+        </AuthProvider>
+      </ThemeProvider>
     </QueryClientProvider>
   );
 }

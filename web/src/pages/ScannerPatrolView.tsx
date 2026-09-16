@@ -154,17 +154,17 @@ export const ScannerPatrolView: React.FC = () => {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-slate-100 flex items-center gap-2">
+          <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
             <Camera className="w-6 h-6 text-blue-500" />
             Scanner de Ronda
           </h1>
-          <p className="text-slate-400 mt-1">Realize a leitura de checkpoints (Modo PWA Offline)</p>
+          <p className="text-slate-500 dark:text-slate-400 mt-1">Realize a leitura de checkpoints (Modo PWA Offline)</p>
         </div>
         
         <button
           onClick={handleSync}
           disabled={isSyncing || pendingSyncCount === 0}
-          className="bg-slate-800 hover:bg-slate-700 text-sky-400 px-4 py-2 rounded-xl flex items-center gap-2 border border-slate-700 disabled:opacity-50"
+          className="bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-sky-400 px-4 py-2 rounded-xl flex items-center gap-2 border border-slate-300 dark:border-slate-700 disabled:opacity-50"
         >
           <RotateCw className={`w-4 h-4 ${isSyncing ? 'animate-spin' : ''}`} />
           Sincronizar Pendentes ({pendingSyncCount})
@@ -179,22 +179,22 @@ export const ScannerPatrolView: React.FC = () => {
       )}
 
       {!sessionId ? (
-        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6">
-          <h2 className="text-lg font-semibold text-slate-200 mb-4 flex items-center gap-2">
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+          <h2 className="text-lg font-semibold text-slate-800 dark:text-slate-200 mb-4 flex items-center gap-2">
             <Map className="w-5 h-5 text-indigo-400" />
             Selecione a Rota para Iniciar
           </h2>
           {routes.length === 0 ? (
-            <p className="text-slate-400">Nenhuma rota disponível.</p>
+            <p className="text-slate-500 dark:text-slate-400">Nenhuma rota disponível.</p>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {routes.map(route => (
-                <div key={route.id} className="bg-slate-800 p-4 rounded-xl border border-slate-700 hover:border-blue-500/50 transition-colors">
-                  <h3 className="font-bold text-slate-200">{route.nome}</h3>
-                  <p className="text-xs text-slate-400 mt-1 mb-4">Min. {route.qtdeMinimaCheckpoints} pontos</p>
+                <div key={route.id} className="bg-slate-100 dark:bg-slate-800 p-4 rounded-xl border border-slate-300 dark:border-slate-700 hover:border-blue-500/50 transition-colors">
+                  <h3 className="font-bold text-slate-800 dark:text-slate-200">{route.nome}</h3>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 mb-4">Min. {route.qtdeMinimaCheckpoints} pontos</p>
                   <button
                     onClick={() => handleStartSession(route)}
-                    className="w-full bg-blue-500 hover:bg-blue-600 text-slate-950 font-semibold py-2 rounded-lg"
+                    className="w-full bg-blue-500 hover:bg-blue-600 text-white dark:text-slate-950 font-semibold py-2 rounded-lg"
                   >
                     Iniciar Ronda
                   </button>
@@ -205,10 +205,10 @@ export const ScannerPatrolView: React.FC = () => {
         </div>
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 flex flex-col items-center justify-center">
-            <h2 className="text-lg font-semibold text-slate-200 mb-4 w-full text-center">Câmera Ativa</h2>
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 flex flex-col items-center justify-center">
+            <h2 className="text-lg font-semibold text-slate-800 dark:text-slate-200 mb-4 w-full text-center">Câmera Ativa</h2>
             
-            <div id="qr-reader" className="w-full max-w-lg mx-auto overflow-hidden rounded-xl bg-black border border-slate-700 shadow-xl"></div>
+            <div id="qr-reader" className="w-full max-w-lg mx-auto overflow-hidden rounded-xl bg-black border border-slate-300 dark:border-slate-700 shadow-xl"></div>
             
             <button
               onClick={handleEndSession}
@@ -218,8 +218,8 @@ export const ScannerPatrolView: React.FC = () => {
             </button>
           </div>
 
-          <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6">
-            <h2 className="text-lg font-semibold text-slate-200 mb-4 flex items-center gap-2">
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+            <h2 className="text-lg font-semibold text-slate-800 dark:text-slate-200 mb-4 flex items-center gap-2">
               <CheckCircle2 className="w-5 h-5 text-blue-400" />
               Pontos Lidos ({scannedCheckpoints.length} de {selectedRoute?.checkpoints.length || 0})
             </h2>
@@ -228,8 +228,8 @@ export const ScannerPatrolView: React.FC = () => {
             ) : (
               <ul className="space-y-2">
                 {scannedCheckpoints.map((cp, idx) => (
-                  <li key={idx} className="bg-slate-800 px-4 py-3 rounded-lg flex items-center justify-between border border-slate-700">
-                    <span className="text-slate-300 font-medium">{cp}</span>
+                  <li key={idx} className="bg-slate-100 dark:bg-slate-800 px-4 py-3 rounded-lg flex items-center justify-between border border-slate-300 dark:border-slate-700">
+                    <span className="text-slate-700 dark:text-slate-300 font-medium">{cp}</span>
                     <span className="text-xs bg-blue-500/20 text-blue-400 px-2 py-1 rounded">Salvo</span>
                   </li>
                 ))}
