@@ -22,7 +22,7 @@ import {
   CachedRoute,
   CachedCheckpoint,
 } from '../services/db';
-import { api, setAuthToken, updateServerUrl, getCurrentServerUrl } from '../services/apiService';
+import { api, setAuthToken, updateServerUrl, getCurrentServerUrl, loadSavedServerUrl } from '../services/apiService';
 import { flushSyncQueue, startNetworkSyncListener } from '../services/syncEngine';
 import { ScannerScreen } from './ScannerScreen';
 
@@ -32,8 +32,6 @@ export const PatrolApp: React.FC = () => {
 
   // Auth state
   const [token, setToken] = useState<string | null>(null);
-  const [email, setEmail] = useState('admin@ronda.com');
-  const [senha, setSenha] = useState('admin123');
   const [user, setUser] = useState<any>(null);
 
   // App State
@@ -71,6 +69,9 @@ export const PatrolApp: React.FC = () => {
 
   useEffect(() => {
     const setup = async () => {
+      const savedUrl = await loadSavedServerUrl();
+      setServerUrlInput(savedUrl);
+      
       await initDatabase();
       setDbReady(true);
       refreshPendingSyncCount();
@@ -222,7 +223,7 @@ export const PatrolApp: React.FC = () => {
   if (!dbReady) {
     return (
       <View style={styles.center}>
-        <ActivityIndicator size="large" color="#10b981" />
+        <ActivityIndicator size="large" color="#3b82f6" />
         <Text style={styles.loadingText}>Inicializando Banco de Dados Local...</Text>
       </View>
     );
@@ -247,12 +248,12 @@ export const PatrolApp: React.FC = () => {
       <View style={styles.header}>
         <View style={styles.headerLeft}>
           <TouchableOpacity style={styles.backHomeButton} onPress={handleResetToHome}>
-            <Text style={styles.backHomeButtonText}>🏠 Login</Text>
+            <Text style={styles.backHomeButtonText}>🏠 Início</Text>
           </TouchableOpacity>
           <View>
             <Text style={styles.headerTitle}>Ronda Vigilante</Text>
             <Text style={styles.headerSubtitle}>
-              IP: <Text style={styles.highlight}>{getCurrentServerUrl().replace('http://', '')}</Text>
+              Servidor: <Text style={styles.highlight}>{getCurrentServerUrl().replace('http://', '')}</Text>
             </Text>
           </View>
         </View>
@@ -273,42 +274,33 @@ export const PatrolApp: React.FC = () => {
       </View>
 
       <ScrollView contentContainerStyle={styles.content}>
-        {/* TELA DE LOGIN / CARGA INICIAL DO BANCO */}
+        {/* TELA DE BOAS-VINDAS / HOME */}
         {currentScreen === 'LOGIN' ? (
           <View style={styles.authContainer}>
             <Text style={styles.brandTitle}>🛡️ Ronda Mobile</Text>
             <Text style={styles.brandSubtitle}>Aplicativo Vigilante Offline-First</Text>
 
             <View style={styles.card}>
-              <View style={styles.cardHeaderRow}>
-                <Text style={styles.cardTitle}>Atualizar Banco do Celular</Text>
-                <TouchableOpacity onPress={() => setShowConfigModal(true)}>
-                  <Text style={styles.configLink}>⚙️ IP Servidor</Text>
-                </TouchableOpacity>
-              </View>
+              <Text style={styles.cardTitle}>Bem-vindo ao sistema de rondas!</Text>
               <Text style={styles.cardSubtitle}>
-                Servidor: <Text style={styles.ipText}>{getCurrentServerUrl()}</Text>
+                Certifique-se de baixar as rotas mais recentes antes de sair para o percurso caso tenha conexão.
               </Text>
 
               <TouchableOpacity style={styles.primaryButton} onPress={handleDownloadFreshRoutes} disabled={loading}>
                 {loading ? (
                   <ActivityIndicator color="#020617" />
                 ) : (
-                  <Text style={styles.primaryButtonText}>📥 Baixar / Atualizar Banco do Celular</Text>
+                  <Text style={styles.primaryButtonText}>📥 Sincronizar Rotas com Servidor</Text>
                 )}
               </TouchableOpacity>
 
               {routes.length > 0 && (
                 <TouchableOpacity style={styles.secondaryNavButton} onPress={() => setCurrentScreen('ROUTES')}>
                   <Text style={styles.secondaryNavButtonText}>
-                    ▶ Entrar sem Atualizar ({routes.length} rotas salvas localmente)
+                    ▶ Continuar Ronda Offline ({routes.length} rotas salvas)
                   </Text>
                 </TouchableOpacity>
               )}
-
-              <TouchableOpacity style={styles.configButtonSecondary} onPress={() => setShowLogsModal(true)}>
-                <Text style={styles.configButtonSecondaryText}>📋 Ver Logs de Sincronização & Rede</Text>
-              </TouchableOpacity>
             </View>
           </View>
         ) : currentScreen === 'ROUTES' ? (
@@ -547,7 +539,7 @@ const styles = StyleSheet.create({
   brandTitle: {
     fontSize: 28,
     fontWeight: 'bold',
-    color: '#10b981',
+    color: '#3b82f6',
     textAlign: 'center',
   },
   brandSubtitle: {
@@ -585,7 +577,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   ipText: {
-    color: '#10b981',
+    color: '#3b82f6',
     fontWeight: 'bold',
   },
   input: {
@@ -600,7 +592,7 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   primaryButton: {
-    backgroundColor: '#10b981',
+    backgroundColor: '#3b82f6',
     borderRadius: 12,
     paddingVertical: 14,
     alignItems: 'center',
@@ -672,7 +664,7 @@ const styles = StyleSheet.create({
     color: '#64748b',
   },
   highlight: {
-    color: '#10b981',
+    color: '#3b82f6',
     fontWeight: 'bold',
   },
   headerRight: {
@@ -776,8 +768,8 @@ const styles = StyleSheet.create({
     borderColor: '#1e293b',
   },
   routeCardSelected: {
-    borderColor: '#10b981',
-    backgroundColor: '#064e3b22',
+    borderColor: '#3b82f6',
+    backgroundColor: '#1e3a8a22',
   },
   routeName: {
     fontSize: 16,
@@ -804,14 +796,14 @@ const styles = StyleSheet.create({
   },
   routeBadgeOrdered: {
     fontSize: 11,
-    color: '#10b981',
-    backgroundColor: '#05966922',
+    color: '#3b82f6',
+    backgroundColor: '#2563eb22',
     paddingHorizontal: 8,
     paddingVertical: 2,
     borderRadius: 6,
   },
   startButton: {
-    backgroundColor: '#10b981',
+    backgroundColor: '#3b82f6',
     borderRadius: 14,
     paddingVertical: 14,
     alignItems: 'center',
@@ -940,7 +932,7 @@ const styles = StyleSheet.create({
     borderColor: '#1e293b',
   },
   logIndex: {
-    color: '#10b981',
+    color: '#3b82f6',
     fontWeight: 'bold',
     width: 24,
   },
@@ -1052,7 +1044,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
   },
   saveModalButton: {
-    backgroundColor: '#10b981',
+    backgroundColor: '#3b82f6',
     paddingHorizontal: 20,
     paddingVertical: 12,
     borderRadius: 12,

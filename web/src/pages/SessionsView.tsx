@@ -34,7 +34,7 @@ export const SessionsView: React.FC = () => {
             Acompanhe o status de execução das rondas enviadas pelos vigilantes via aplicativo.
           </p>
         </div>
-        <div className="flex items-center space-x-2 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1.5 rounded-xl text-emerald-400 text-xs font-bold">
+        <div className="flex items-center space-x-2 bg-blue-500/10 border border-blue-500/20 px-3 py-1.5 rounded-xl text-blue-400 text-xs font-bold">
           <Activity className="w-4 h-4 animate-pulse" />
           <span>Ao Vivo (Atualizando a cada 3s)</span>
         </div>
@@ -68,7 +68,7 @@ export const SessionsView: React.FC = () => {
                   <tr key={session.id} className="hover:bg-slate-800/40 transition-colors">
                     <td className="px-6 py-4">
                       <div className="font-bold text-slate-100 flex items-center space-x-1.5">
-                        <MapPin className="w-3.5 h-3.5 text-emerald-400" />
+                        <MapPin className="w-3.5 h-3.5 text-blue-400" />
                         <span>{session.routeNome || `Rota #${session.routeId.substring(0, 8)}`}</span>
                       </div>
                       <div className="text-xs text-slate-400 flex items-center space-x-1 mt-0.5">
@@ -84,7 +84,7 @@ export const SessionsView: React.FC = () => {
                     </td>
                     <td className="px-6 py-4">
                       {session.status === 'COMPLETED' ? (
-                        <span className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                        <span className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full text-xs font-bold bg-blue-500/10 text-blue-400 border border-blue-500/20">
                           <CheckCircle className="w-3.5 h-3.5" />
                           <span>COMPLETA (VÁLIDA)</span>
                         </span>
@@ -103,7 +103,7 @@ export const SessionsView: React.FC = () => {
                     <td className="px-6 py-4 text-right">
                       <button
                         onClick={() => setSelectedSessionId(session.id)}
-                        className="inline-flex items-center space-x-1.5 bg-slate-800 hover:bg-slate-700 text-emerald-400 px-3 py-1.5 rounded-xl text-xs font-bold transition-all border border-slate-700"
+                        className="inline-flex items-center space-x-1.5 bg-slate-800 hover:bg-slate-700 text-blue-400 px-3 py-1.5 rounded-xl text-xs font-bold transition-all border border-slate-700"
                       >
                         <Eye className="w-3.5 h-3.5" />
                         <span>Ver Logs</span>
@@ -148,7 +148,7 @@ export const SessionsView: React.FC = () => {
                     className="bg-slate-950 border border-slate-800/80 rounded-xl p-3.5 flex items-center justify-between text-sm"
                   >
                     <div className="flex items-center space-x-3">
-                      <span className="w-6 h-6 rounded-lg bg-emerald-500/10 text-emerald-400 font-bold text-xs flex items-center justify-center border border-emerald-500/20">
+                      <span className="w-6 h-6 rounded-lg bg-blue-500/10 text-blue-400 font-bold text-xs flex items-center justify-center border border-blue-500/20">
                         #{idx + 1}
                       </span>
                       <div>
@@ -166,7 +166,7 @@ export const SessionsView: React.FC = () => {
                           Fora de Ordem
                         </span>
                       ) : (
-                        <span className="text-[10px] bg-emerald-500/10 text-emerald-400 px-2 py-1 rounded font-bold border border-emerald-500/20">
+                        <span className="text-[10px] bg-blue-500/10 text-blue-400 px-2 py-1 rounded font-bold border border-blue-500/20">
                           Ordem Válida
                         </span>
                       )}

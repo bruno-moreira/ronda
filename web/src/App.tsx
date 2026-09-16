@@ -28,7 +28,7 @@ const MainContent: React.FC = () => {
   if (isLoading || isAutoLogging) {
     return (
       <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center text-slate-400">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-500 mb-4"></div>
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mb-4"></div>
         <p>Acessando sistema...</p>
       </div>
     );

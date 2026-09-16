@@ -52,7 +52,7 @@ export const UsersView: React.FC = () => {
         </div>
         <button
           onClick={() => setShowModal(true)}
-          className="flex items-center space-x-2 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold px-4 py-2.5 rounded-xl transition-all shadow-lg shadow-emerald-500/20 text-sm"
+          className="flex items-center space-x-2 bg-blue-500 hover:bg-blue-400 text-slate-950 font-bold px-4 py-2.5 rounded-xl transition-all shadow-lg shadow-blue-500/20 text-sm"
         >
           <UserPlus className="w-4 h-4" />
           <span>Cadastrar Usuário</span>
@@ -70,7 +70,7 @@ export const UsersView: React.FC = () => {
             >
               <div className="space-y-2">
                 <div className="flex items-center space-x-2">
-                  <div className="w-9 h-9 rounded-xl bg-slate-800 flex items-center justify-center text-emerald-400 font-bold">
+                  <div className="w-9 h-9 rounded-xl bg-slate-800 flex items-center justify-center text-blue-400 font-bold">
                     {usr.nome.charAt(0).toUpperCase()}
                   </div>
                   <div>
@@ -84,7 +84,7 @@ export const UsersView: React.FC = () => {
 
                 <div className="pt-2">
                   {usr.role === 'VIGILANTE' ? (
-                    <span className="inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                    <span className="inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-500/10 text-blue-400 border border-blue-500/20">
                       <Smartphone className="w-3 h-3" />
                       <span>Vigilante (App Mobile)</span>
                     </span>
@@ -126,7 +126,7 @@ export const UsersView: React.FC = () => {
                   value={nome}
                   onChange={(e) => setNome(e.target.value)}
                   placeholder="Ex: Carlos Vigilante"
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-slate-100 text-sm focus:border-emerald-500 focus:outline-none"
+                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-slate-100 text-sm focus:border-blue-500 focus:outline-none"
                 />
               </div>
               <div>
@@ -136,7 +136,7 @@ export const UsersView: React.FC = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="carlos@ronda.com"
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-slate-100 text-sm focus:border-emerald-500 focus:outline-none"
+                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-slate-100 text-sm focus:border-blue-500 focus:outline-none"
                 />
               </div>
               <div>
@@ -146,7 +146,7 @@ export const UsersView: React.FC = () => {
                   value={senha}
                   onChange={(e) => setSenha(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-slate-100 text-sm focus:border-emerald-500 focus:outline-none"
+                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-slate-100 text-sm focus:border-blue-500 focus:outline-none"
                 />
               </div>
               <div>
@@ -154,7 +154,7 @@ export const UsersView: React.FC = () => {
                 <select
                   value={role}
                   onChange={(e: any) => setRole(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-slate-100 text-sm focus:border-emerald-500 focus:outline-none"
+                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-slate-100 text-sm focus:border-blue-500 focus:outline-none"
                 >
                   <option value="VIGILANTE">Vigilante (Acesso App Mobile)</option>
                   <option value="SUPERVISOR">Supervisor (Visualiza Painel)</option>
@@ -172,7 +172,7 @@ export const UsersView: React.FC = () => {
               <button
                 onClick={() => createUserMutation.mutate()}
                 disabled={!nome || !email || !senha}
-                className="px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-bold disabled:opacity-50"
+                className="px-4 py-2 rounded-xl bg-blue-500 hover:bg-blue-400 text-slate-950 text-xs font-bold disabled:opacity-50"
               >
                 Cadastrar Usuário
               </button>

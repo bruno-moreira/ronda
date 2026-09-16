@@ -104,7 +104,7 @@ export const RoutesView: React.FC = () => {
         </div>
         <button
           onClick={() => setShowAddRouteModal(true)}
-          className="flex items-center space-x-2 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold px-4 py-2.5 rounded-xl transition-all shadow-lg shadow-emerald-500/20 text-sm"
+          className="flex items-center space-x-2 bg-blue-500 hover:bg-blue-400 text-slate-950 font-bold px-4 py-2.5 rounded-xl transition-all shadow-lg shadow-blue-500/20 text-sm"
         >
           <Plus className="w-4 h-4" />
           <span>Nova Rota</span>
@@ -133,7 +133,7 @@ export const RoutesView: React.FC = () => {
                   <div className="flex items-center space-x-3">
                     <h3 className="text-lg font-bold text-slate-100">{route.nome}</h3>
                     {route.isOrdered ? (
-                      <span className="inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                      <span className="inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-500/10 text-blue-400 border border-blue-500/20">
                         <CheckCircle2 className="w-3.5 h-3.5" />
                         <span>Ordem Obrigatória</span>
                       </span>
@@ -153,7 +153,7 @@ export const RoutesView: React.FC = () => {
                     </span>
                     <span>•</span>
                     <span>
-                      Total de Pontos: <strong className="text-emerald-400">{route.checkpoints?.length || 0}</strong>
+                      Total de Pontos: <strong className="text-blue-400">{route.checkpoints?.length || 0}</strong>
                     </span>
                   </div>
                 </div>
@@ -161,7 +161,7 @@ export const RoutesView: React.FC = () => {
                 <div className="flex items-center space-x-3">
                   <button
                     onClick={() => setSelectedRouteForPrint(route)}
-                    className="flex items-center space-x-2 bg-slate-800 hover:bg-slate-700 text-emerald-400 border border-slate-700 px-3.5 py-2 rounded-xl text-xs font-bold transition-all"
+                    className="flex items-center space-x-2 bg-slate-800 hover:bg-slate-700 text-blue-400 border border-slate-700 px-3.5 py-2 rounded-xl text-xs font-bold transition-all"
                   >
                     <QrCode className="w-4 h-4" />
                     <span>Folha QR Code</span>
@@ -172,7 +172,7 @@ export const RoutesView: React.FC = () => {
                       setAddingCpRouteId(route.id);
                       setOrdemCp((route.checkpoints?.length || 0) + 1);
                     }}
-                    className="flex items-center space-x-1.5 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/20 px-3.5 py-2 rounded-xl text-xs font-bold transition-all"
+                    className="flex items-center space-x-1.5 bg-blue-500/10 hover:bg-blue-500/20 text-blue-400 border border-blue-500/20 px-3.5 py-2 rounded-xl text-xs font-bold transition-all"
                   >
                     <Plus className="w-4 h-4" />
                     <span>Add Checkpoint</span>
@@ -206,7 +206,7 @@ export const RoutesView: React.FC = () => {
                       >
                         <div className="flex items-start justify-between">
                           <div className="flex items-center space-x-2">
-                            <span className="w-6 h-6 rounded-lg bg-emerald-500/10 text-emerald-400 font-bold text-xs flex items-center justify-center border border-emerald-500/20">
+                            <span className="w-6 h-6 rounded-lg bg-blue-500/10 text-blue-400 font-bold text-xs flex items-center justify-center border border-blue-500/20">
                               #{cp.ordem ?? idx + 1}
                             </span>
                             <h5 className="font-semibold text-sm text-slate-200">{cp.nome}</h5>
@@ -214,7 +214,7 @@ export const RoutesView: React.FC = () => {
                           <div className="flex items-center space-x-1">
                             <button
                               onClick={() => regenHashMutation.mutate(cp.id)}
-                              className="p-1 text-slate-500 hover:text-emerald-400 transition-colors"
+                              className="p-1 text-slate-500 hover:text-blue-400 transition-colors"
                               title="Regerar Hash de QR Code"
                             >
                               <RefreshCw className="w-3.5 h-3.5" />
@@ -261,7 +261,7 @@ export const RoutesView: React.FC = () => {
                   value={nomeRota}
                   onChange={(e) => setNomeRota(e.target.value)}
                   placeholder="Ex: Ronda Galpão Principal"
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-slate-100 text-sm focus:border-emerald-500 focus:outline-none"
+                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-slate-100 text-sm focus:border-blue-500 focus:outline-none"
                 />
               </div>
               <div>
@@ -270,7 +270,7 @@ export const RoutesView: React.FC = () => {
                   value={descricaoRota}
                   onChange={(e) => setDescricaoRota(e.target.value)}
                   placeholder="Detalhes da rota..."
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-slate-100 text-sm focus:border-emerald-500 focus:outline-none"
+                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-slate-100 text-sm focus:border-blue-500 focus:outline-none"
                   rows={2}
                 />
               </div>
@@ -282,7 +282,7 @@ export const RoutesView: React.FC = () => {
                     min={1}
                     value={qtdeMin}
                     onChange={(e) => setQtdeMin(Number(e.target.value))}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-slate-100 text-sm focus:border-emerald-500 focus:outline-none"
+                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-slate-100 text-sm focus:border-blue-500 focus:outline-none"
                   />
                 </div>
                 <div className="flex items-center pt-5">
@@ -291,7 +291,7 @@ export const RoutesView: React.FC = () => {
                       type="checkbox"
                       checked={isOrdered}
                       onChange={(e) => setIsOrdered(e.target.checked)}
-                      className="rounded bg-slate-950 border-slate-800 text-emerald-500 focus:ring-0"
+                      className="rounded bg-slate-950 border-slate-800 text-blue-500 focus:ring-0"
                     />
                     <span>Ordem Sequencial?</span>
                   </label>
@@ -308,7 +308,7 @@ export const RoutesView: React.FC = () => {
               <button
                 onClick={() => createRouteMutation.mutate()}
                 disabled={!nomeRota}
-                className="px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-bold disabled:opacity-50"
+                className="px-4 py-2 rounded-xl bg-blue-500 hover:bg-blue-400 text-slate-950 text-xs font-bold disabled:opacity-50"
               >
                 Salvar Rota
               </button>
@@ -330,7 +330,7 @@ export const RoutesView: React.FC = () => {
                   value={nomeCp}
                   onChange={(e) => setNomeCp(e.target.value)}
                   placeholder="Ex: Portão B2"
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-slate-100 text-sm focus:border-emerald-500 focus:outline-none"
+                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-slate-100 text-sm focus:border-blue-500 focus:outline-none"
                 />
               </div>
               <div className="grid grid-cols-3 gap-2">
@@ -340,7 +340,7 @@ export const RoutesView: React.FC = () => {
                     type="number"
                     value={ordemCp}
                     onChange={(e) => setOrdemCp(Number(e.target.value))}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-slate-100 text-sm focus:border-emerald-500 focus:outline-none"
+                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-slate-100 text-sm focus:border-blue-500 focus:outline-none"
                   />
                 </div>
                 <div>
@@ -350,7 +350,7 @@ export const RoutesView: React.FC = () => {
                     step="any"
                     value={latCp}
                     onChange={(e) => setLatCp(Number(e.target.value))}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-slate-100 text-sm focus:border-emerald-500 focus:outline-none"
+                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-slate-100 text-sm focus:border-blue-500 focus:outline-none"
                   />
                 </div>
                 <div>
@@ -360,7 +360,7 @@ export const RoutesView: React.FC = () => {
                     step="any"
                     value={lngCp}
                     onChange={(e) => setLngCp(Number(e.target.value))}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-slate-100 text-sm focus:border-emerald-500 focus:outline-none"
+                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-slate-100 text-sm focus:border-blue-500 focus:outline-none"
                   />
                 </div>
               </div>
@@ -375,7 +375,7 @@ export const RoutesView: React.FC = () => {
               <button
                 onClick={() => createCpMutation.mutate()}
                 disabled={!nomeCp}
-                className="px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-bold disabled:opacity-50"
+                className="px-4 py-2 rounded-xl bg-blue-500 hover:bg-blue-400 text-slate-950 text-xs font-bold disabled:opacity-50"
               >
                 Gerar Hash & Salvar
               </button>

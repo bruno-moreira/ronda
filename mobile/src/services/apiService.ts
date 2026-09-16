@@ -1,10 +1,12 @@
 import axios from 'axios';
 import Constants from 'expo-constants';
 import { Platform } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const COMPUTER_HOST_IP = '10.107.20.214';
+// Um IP mais genérico apenas para evitar falha no boot inicial
+const FALLBACK_IP = '192.168.1.1';
 
-let currentServerUrl = `http://${COMPUTER_HOST_IP}:3000`;
+let currentServerUrl = `http://${FALLBACK_IP}:3000`;
 
 const getBackendUrl = () => {
   const hostUri = Constants.expoConfig?.hostUri || Constants.manifest2?.manifestHeaders?.['expo-host'];
@@ -15,12 +17,7 @@ const getBackendUrl = () => {
       return `http://${ipAddress}:3000`;
     }
   }
-
-  if (Platform.OS === 'android') {
-    return `http://${COMPUTER_HOST_IP}:3000`;
-  }
-
-  return `http://${COMPUTER_HOST_IP}:3000`;
+  return `http://${FALLBACK_IP}:3000`;
 };
 
 currentServerUrl = getBackendUrl();
@@ -29,6 +26,21 @@ export const api = axios.create({
   baseURL: currentServerUrl,
   timeout: 10000,
 });
+
+export const loadSavedServerUrl = async () => {
+  try {
+    const saved = await AsyncStorage.getItem('@ronda_server_url');
+    if (saved) {
+      currentServerUrl = saved;
+      api.defaults.baseURL = saved;
+      console.log('[API Service] URL restaurada da memória:', saved);
+      return saved;
+    }
+  } catch (e) {
+    console.warn('Erro ao carregar URL salva:', e);
+  }
+  return currentServerUrl;
+};
 
 export const updateServerUrl = (newUrl: string) => {
   let formattedUrl = newUrl.trim();
@@ -58,6 +70,7 @@ export const updateServerUrl = (newUrl: string) => {
 
   currentServerUrl = formattedUrl;
   api.defaults.baseURL = formattedUrl;
+  AsyncStorage.setItem('@ronda_server_url', formattedUrl).catch(() => {});
   console.log('[API Service Sanitizado] Servidor configurado para:', currentServerUrl);
   return currentServerUrl;
 };

@@ -32,20 +32,20 @@ export const QRCodePrintSheet: React.FC<QRCodePrintSheetProps> = ({ route, onClo
       <div className="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-4xl p-6 no-print mb-6 shadow-2xl">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
-            <div className="bg-emerald-500/10 p-2.5 rounded-xl border border-emerald-500/20">
-              <Printer className="w-6 h-6 text-emerald-400" />
+            <div className="bg-blue-500/10 p-2.5 rounded-xl border border-blue-500/20">
+              <Printer className="w-6 h-6 text-blue-400" />
             </div>
             <div>
               <h2 className="text-xl font-bold text-slate-100">Imprimir Folha de QR Codes</h2>
               <p className="text-sm text-slate-400">
-                Rota: <strong className="text-emerald-400">{route.nome}</strong> ({route.checkpoints?.length || 0} checkpoints)
+                Rota: <strong className="text-blue-400">{route.nome}</strong> ({route.checkpoints?.length || 0} checkpoints)
               </p>
             </div>
           </div>
           <div className="flex items-center space-x-3">
             <button
               onClick={handlePrint}
-              className="flex items-center space-x-2 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold px-4 py-2.5 rounded-xl transition-all shadow-lg shadow-emerald-500/20"
+              className="flex items-center space-x-2 bg-blue-500 hover:bg-blue-400 text-slate-950 font-bold px-4 py-2.5 rounded-xl transition-all shadow-lg shadow-blue-500/20"
             >
               <Printer className="w-4 h-4" />
               <span>Imprimir Agora</span>

@@ -70,13 +70,23 @@ O sistema agora conta com um ambiente de deploy completo via Docker Compose, emp
 
 ### 1️⃣ Inicializando a Infraestrutura (Backend + Web)
 
-Abra um terminal na raiz do projeto (onde está o `docker-compose.yml`) e execute:
+A forma mais fácil e recomendada de gerenciar a infraestrutura é através dos atalhos do **Makefile** que criamos.
+Abra um terminal na raiz do projeto e execute:
 
 ```bash
-docker compose up --build -d
+make deploy
 ```
 
-Este comando irá baixar as dependências, construir e iniciar:
+O comando `make deploy` irá automaticamente derrubar containers antigos, limpar a memória e reconstruir as imagens puxando o código mais recente. 
+
+**Outros atalhos úteis de infraestrutura:**
+- `make logs`: Mostra os logs ao vivo de todos os containers.
+- `make down`: Desliga a infraestrutura de forma segura.
+- `make up`: Liga o sistema rapidamente sem reconstruir as imagens.
+
+Se preferir o modo tradicional, você ainda pode rodar diretamente o comando `docker compose up --build -d`.
+
+Após o deploy, o sistema subirá:
 1. **Banco de Dados**: PostgreSQL na porta `5433` (externa).
 2. **Backend (API)**: Comunicação estritamente interna com o Docker.
 3. **Frontend + Proxy Reverso (Nginx)**: Servindo a interface Web e roteando a API (evitando CORS). Disponível na porta `8080`.

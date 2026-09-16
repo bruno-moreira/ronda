@@ -26,10 +26,10 @@ export const LoginView: React.FC = () => {
     <div className="min-h-screen bg-slate-950 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <div className="inline-flex bg-emerald-500/10 p-4 rounded-2xl border border-emerald-500/20 mb-4 shadow-xl shadow-emerald-500/10">
-            <Shield className="w-10 h-10 text-emerald-400" />
+          <div className="inline-flex bg-blue-500/10 p-4 rounded-2xl border border-blue-500/20 mb-4 shadow-xl shadow-blue-500/10">
+            <Shield className="w-10 h-10 text-blue-400" />
           </div>
-          <h1 className="text-2xl font-bold bg-gradient-to-r from-emerald-400 to-teal-300 bg-clip-text text-transparent">
+          <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">
             Ronda Security System
           </h1>
           <p className="text-sm text-slate-400 mt-1">Painel Administrativo de Controle de Rondas</p>
@@ -55,7 +55,7 @@ export const LoginView: React.FC = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl pl-11 pr-4 py-3 text-slate-100 placeholder-slate-500 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 text-sm transition-all"
+                  className="w-full bg-slate-950 border border-slate-800 rounded-xl pl-11 pr-4 py-3 text-slate-100 placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-sm transition-all"
                   placeholder="admin@ronda.com"
                 />
               </div>
@@ -72,7 +72,7 @@ export const LoginView: React.FC = () => {
                   value={senha}
                   onChange={(e) => setSenha(e.target.value)}
                   required
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl pl-11 pr-4 py-3 text-slate-100 placeholder-slate-500 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 text-sm transition-all"
+                  className="w-full bg-slate-950 border border-slate-800 rounded-xl pl-11 pr-4 py-3 text-slate-100 placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-sm transition-all"
                   placeholder="••••••••"
                 />
               </div>
@@ -81,7 +81,7 @@ export const LoginView: React.FC = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold py-3 px-4 rounded-xl transition-all shadow-lg shadow-emerald-500/20 flex items-center justify-center space-x-2 text-sm disabled:opacity-50"
+              className="w-full bg-blue-500 hover:bg-blue-400 text-slate-950 font-bold py-3 px-4 rounded-xl transition-all shadow-lg shadow-blue-500/20 flex items-center justify-center space-x-2 text-sm disabled:opacity-50"
             >
               <span>{loading ? 'Entrando...' : 'Acessar Painel'}</span>
               {!loading && <ArrowRight className="w-4 h-4" />}

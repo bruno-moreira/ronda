@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   title: {
-    color: '#10b981',
+    color: '#3b82f6',
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 8,
@@ -178,9 +178,9 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   quickCpButton: {
-    backgroundColor: '#10b98122',
+    backgroundColor: '#3b82f622',
     borderWidth: 1,
-    borderColor: '#10b981',
+    borderColor: '#3b82f6',
     borderRadius: 12,
     padding: 10,
     marginBottom: 8,
@@ -189,7 +189,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   quickCpButtonText: {
-    color: '#10b981',
+    color: '#3b82f6',
     fontWeight: 'bold',
     fontSize: 13,
   },
@@ -241,7 +241,7 @@ const styles = StyleSheet.create({
     width: 250,
     height: 250,
     borderWidth: 3,
-    borderColor: '#10b981',
+    borderColor: '#3b82f6',
     borderRadius: 24,
     backgroundColor: 'transparent',
   },
